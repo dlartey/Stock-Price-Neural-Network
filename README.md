@@ -9,9 +9,11 @@ Utilises Python and TensorFlow
 ## To Do List
 | Task ID | Task Description | Completed? |
 | ------- | ---------------  |  --------- |
-| 1 | Create website where parameters can be customised to see how well model performs | &#9745; |
+| 1 | Create website where parameters can be customised to see how well model performs | &#9744; |
 | 2 | Compare model with different stock price tickers to see which provides best accuracy | &#9744; |
 | 3 | Deploy to AWS using an EC2 instance or using beanstalk with flask/django | &#9744; |
 | 4 | Create a docker container which can be run on any machine containing docker | &#9744; |
 | 5 | Add an option where you can select different ML models to choose from | &#9744; |
 | 6 | Calculate accuracy of each model and store it in a database of some sort | &#9744; (50% done) |
+
+<!-- &#9745; - done, &#9744; - not done --> 
