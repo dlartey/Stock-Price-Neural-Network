@@ -6,6 +6,7 @@ import pandas_datareader as web
 import datetime as dt
 
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import accuracy_score, r2_score
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, LSTM
 
@@ -81,26 +82,21 @@ model_inputs = scaler.transform(model_inputs)
 # Make Predictions on Test Data
 
 x_test = []
+y_test = []
 
 for x in range(prediction_days, len(model_inputs)):
     x_test.append(model_inputs[x-prediction_days:x, 0])
+    y_test.append(model_inputs[x,0])
 
 
-x_test = np.array(x_test)
+x_test, y_test = np.array(x_test), np.array(y_test)
 x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
 
 # Predicted prices are now scaled so we need to reverse transform them
 predicted_prices = model.predict(x_test)
+#print(predicted_prices)
 predicted_prices = scaler.inverse_transform(predicted_prices)
 
-# Plot the test Predictions
-plt.plot(actual_prices, color='black', label=f'Actual {company} Price')
-plt.plot(predicted_prices, color = 'blue', label=f'Predicted {company} Price')
-plt.title(f"{company} Share Price")
-plt.xlabel('Time')
-plt.ylabel(f'{company} Share Price')
-plt.legend()
-plt.show()
 
 # Predict Next Day
 
@@ -110,4 +106,20 @@ real_data = np.reshape(real_data, (real_data.shape[0], real_data.shape[1],1))
 
 prediction = model.predict(real_data)
 prediction = scaler.inverse_transform(prediction)
+ytn = y_test.reshape(-1,1)
+originalP = scaler.inverse_transform(ytn)
+#print(originalP)
+accuracy = round((r2_score(originalP,predicted_prices)*100),2)
 print(f"Prediction: {prediction}")
+print(f"Accruracy: {accuracy}")
+
+
+
+# Plot the test Predictions
+plt.plot(actual_prices, color='black', label=f'Actual {company} Price')
+plt.plot(predicted_prices, color = 'blue', label=f'Predicted {company} Price')
+plt.title(f"{company} Share Price")
+plt.xlabel('Time')
+plt.ylabel(f'{company} Share Price')
+plt.legend()
+plt.show()
